@@ -1,0 +1,27 @@
+import pandas as pd 
+
+s_math = pd.read_csv("student-mat.csv", sep = ";")
+
+s_port = pd.read_csv("student-por.csv", sep = ";")
+
+s_math.describe(include = "all")
+
+s_port.describe(include = "all")
+
+! pip install https://github.com/pandas-profiling/pandas-profiling/archive/master.zip
+
+import numpy as np 
+import pandas as pd 
+from pandas_profiling import ProfileReport
+
+profile_math = ProfileReport(s_math, title = "student_math", html = {"style": {"full_width": True}})
+
+profile_port = ProfileReport(s_port, title = "student_port", html = {"style": {"full_width": True}})
+
+profile_math.to_notebook_iframe()
+
+profile_port.to_notebook_iframe()
+
+profile_math.to_file(output_file = "student_math.html")
+
+profile_port.to_file(output_file = "student_port.html")
