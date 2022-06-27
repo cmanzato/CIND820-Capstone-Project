@@ -1,0 +1,280 @@
+---
+title: "student_performance_code"
+output: html_document
+---
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+#reading csv
+stud_perf <- read.csv("C:/Users/cmanz/OneDrive/Documents/Ryerson stuff/cind820/student dataset/student-perf.csv", header = T, stringsAsFactors = F,                          na.strings = c("", "NA"), sep = ";")
+head(stud_perf)
+```
+```{r}
+#checking the datatypes of the attributes
+str(stud_perf)
+```
+```{r}
+#checking for missing values
+sum(is.na(stud_perf))
+```
+```{r}
+#looking for correlation between numeric attributes except final grade(G3)
+cor(stud_perf[, c('age', 'Medu', 'Fedu', 'traveltime', 'studytime', 'failures', 'famrel', 'freetime', 'goout', 'Dalc', 'Walc', 'health', 'absences',                     'G1', 'G2')])
+```
+```{r}
+#graphing frequency distribution of final grade(G3)
+library(epiDisplay)
+tab1(stud_perf$G3, sort.group = "decreasing", cum.percent = T)
+```
+```{r}
+#assigning numeric values to Mjob(mother's job) and Fjob(father's job).
+# 1 - at_home 
+# 2 - services
+# 3 - other
+# 4 - teacher
+# 5 - health
+stud_perf$Mjob[stud_perf$Mjob == 'at_home'] = 1
+stud_perf$Mjob[stud_perf$Mjob == 'services'] = 2
+stud_perf$Mjob[stud_perf$Mjob == 'other'] = 3
+stud_perf$Mjob[stud_perf$Mjob == 'teacher'] = 4
+stud_perf$Mjob[stud_perf$Mjob == 'health'] = 5
+
+stud_perf$Fjob[stud_perf$Fjob == 'at_home'] = 1
+stud_perf$Fjob[stud_perf$Fjob == 'services'] = 2
+stud_perf$Fjob[stud_perf$Fjob == 'other'] = 3
+stud_perf$Fjob[stud_perf$Fjob == 'teacher'] = 4
+stud_perf$Fjob[stud_perf$Fjob == 'health'] = 5
+
+head(stud_perf)
+```
+```{r}
+#assigning binary values to yes or no attributes (schoolsup, famsup, paid, activities, nursery, higher, internet, romantic)
+stud_perf$schoolsup[stud_perf$schoolsup == 'yes'] = 1
+stud_perf$schoolsup[stud_perf$schoolsup == 'no'] = 0
+
+stud_perf$famsup[stud_perf$famsup == 'yes'] = 1
+stud_perf$famsup[stud_perf$famsup == 'no'] = 0
+
+stud_perf$paid[stud_perf$paid == 'yes'] = 1
+stud_perf$paid[stud_perf$paid == 'no'] = 0
+
+stud_perf$activities[stud_perf$activities == 'yes'] = 1
+stud_perf$activities[stud_perf$activities == 'no'] = 0
+
+stud_perf$nursery[stud_perf$nursery == 'yes'] = 1
+stud_perf$nursery[stud_perf$nursery == 'no'] = 0
+
+stud_perf$higher[stud_perf$higher == 'yes'] = 1
+stud_perf$higher[stud_perf$higher == 'no'] = 0
+
+stud_perf$internet[stud_perf$internet == 'yes'] = 1
+stud_perf$internet[stud_perf$internet == 'no'] = 0
+
+stud_perf$romantic[stud_perf$romantic == 'yes'] = 1
+stud_perf$romantic[stud_perf$romantic == 'no'] = 0
+
+head(stud_perf)
+```
+```{r}
+#assigning pass or fail to the grades columns
+#for G1
+stud_perf$G1[stud_perf$G1 == 0] = 'Fail'
+stud_perf$G1[stud_perf$G1 == 1] = 'Fail'
+stud_perf$G1[stud_perf$G1 == 2] = 'Fail'
+stud_perf$G1[stud_perf$G1 == 3] = 'Fail'
+stud_perf$G1[stud_perf$G1 == 4] = 'Fail'
+stud_perf$G1[stud_perf$G1 == 5] = 'Fail'
+stud_perf$G1[stud_perf$G1 == 6] = 'Fail'
+stud_perf$G1[stud_perf$G1 == 7] = 'Fail'
+stud_perf$G1[stud_perf$G1 == 8] = 'Fail'
+stud_perf$G1[stud_perf$G1 == 9] = 'Fail'
+stud_perf$G1[stud_perf$G1 == 10] = 'Pass'
+stud_perf$G1[stud_perf$G1 == 11] = 'Pass'
+stud_perf$G1[stud_perf$G1 == 12] = 'Pass'
+stud_perf$G1[stud_perf$G1 == 13] = 'Pass'
+stud_perf$G1[stud_perf$G1 == 14] = 'Pass'
+stud_perf$G1[stud_perf$G1 == 15] = 'Pass'
+stud_perf$G1[stud_perf$G1 == 16] = 'Pass'
+stud_perf$G1[stud_perf$G1 == 17] = 'Pass'
+stud_perf$G1[stud_perf$G1 == 18] = 'Pass'
+stud_perf$G1[stud_perf$G1 == 19] = 'Pass'
+stud_perf$G1[stud_perf$G1 == 20] = 'Pass'
+
+#for G2
+stud_perf$G2[stud_perf$G2 == 0] = 'Fail'
+stud_perf$G2[stud_perf$G2 == 1] = 'Fail'
+stud_perf$G2[stud_perf$G2 == 2] = 'Fail'
+stud_perf$G2[stud_perf$G2 == 3] = 'Fail'
+stud_perf$G2[stud_perf$G2 == 4] = 'Fail'
+stud_perf$G2[stud_perf$G2 == 5] = 'Fail'
+stud_perf$G2[stud_perf$G2 == 6] = 'Fail'
+stud_perf$G2[stud_perf$G2 == 7] = 'Fail'
+stud_perf$G2[stud_perf$G2 == 8] = 'Fail'
+stud_perf$G2[stud_perf$G2 == 9] = 'Fail'
+stud_perf$G2[stud_perf$G2 == 10] = 'Pass'
+stud_perf$G2[stud_perf$G2 == 11] = 'Pass'
+stud_perf$G2[stud_perf$G2 == 12] = 'Pass'
+stud_perf$G2[stud_perf$G2 == 13] = 'Pass'
+stud_perf$G2[stud_perf$G2 == 14] = 'Pass'
+stud_perf$G2[stud_perf$G2 == 15] = 'Pass'
+stud_perf$G2[stud_perf$G2 == 16] = 'Pass'
+stud_perf$G2[stud_perf$G2 == 17] = 'Pass'
+stud_perf$G2[stud_perf$G2 == 18] = 'Pass'
+stud_perf$G2[stud_perf$G2 == 19] = 'Pass'
+stud_perf$G2[stud_perf$G2 == 20] = 'Pass'
+
+#for G3
+stud_perf$G3[stud_perf$G3 == 0] = 'Fail'
+stud_perf$G3[stud_perf$G3 == 1] = 'Fail'
+stud_perf$G3[stud_perf$G3 == 2] = 'Fail'
+stud_perf$G3[stud_perf$G3 == 3] = 'Fail'
+stud_perf$G3[stud_perf$G3 == 4] = 'Fail'
+stud_perf$G3[stud_perf$G3 == 5] = 'Fail'
+stud_perf$G3[stud_perf$G3 == 6] = 'Fail'
+stud_perf$G3[stud_perf$G3 == 7] = 'Fail'
+stud_perf$G3[stud_perf$G3 == 8] = 'Fail'
+stud_perf$G3[stud_perf$G3 == 9] = 'Fail'
+stud_perf$G3[stud_perf$G3 == 10] = 'Pass'
+stud_perf$G3[stud_perf$G3 == 11] = 'Pass'
+stud_perf$G3[stud_perf$G3 == 12] = 'Pass'
+stud_perf$G3[stud_perf$G3 == 13] = 'Pass'
+stud_perf$G3[stud_perf$G3 == 14] = 'Pass'
+stud_perf$G3[stud_perf$G3 == 15] = 'Pass'
+stud_perf$G3[stud_perf$G3 == 16] = 'Pass'
+stud_perf$G3[stud_perf$G3 == 17] = 'Pass'
+stud_perf$G3[stud_perf$G3 == 18] = 'Pass'
+stud_perf$G3[stud_perf$G3 == 19] = 'Pass'
+stud_perf$G3[stud_perf$G3 == 20] = 'Pass'
+
+head(stud_perf)
+```
+
+```{r}
+#changing specific columns to numeric
+stud_perf$Mjob <- as.numeric(as.character(stud_perf$Mjob))
+stud_perf$Fjob <- as.numeric(as.character(stud_perf$Fjob))
+stud_perf$schoolsup <- as.numeric(as.character(stud_perf$schoolsup))
+stud_perf$famsup <- as.numeric(as.character(stud_perf$famsup))
+stud_perf$paid <- as.numeric(as.character(stud_perf$paid))
+stud_perf$activities <- as.numeric(as.character(stud_perf$activities))
+stud_perf$nursery <- as.numeric(as.character(stud_perf$nursery))
+stud_perf$higher <- as.numeric(as.character(stud_perf$higher))
+stud_perf$internet <- as.numeric(as.character(stud_perf$internet))
+stud_perf$romantic <- as.numeric(as.character(stud_perf$romantic))
+
+str(stud_perf)
+```
+
+```{r}
+#normalizing the numeric attributes
+minmaxNorm <- function(x) {
+  (x - min(x)) / (max(x) - min(x))
+}
+
+studperf_norm1 <- as.data.frame(lapply(stud_perf[7:10], minmaxNorm))
+head(studperf_norm1)
+
+studperf_norm2 <- as.data.frame(lapply(stud_perf[13:30], minmaxNorm))
+head(studperf_norm2)
+
+```
+```{r}
+#merging the normalized data frames side by side
+studperf_norm <- cbind(studperf_norm1, studperf_norm2)
+head(studperf_norm)
+```
+```{r}
+#creating the train and test sets 
+train_ind <- sample(1:nrow(stud_perf), 0.7 * nrow(stud_perf))
+train.perf <- stud_perf[train_ind, ]
+test.perf <- stud_perf[-train_ind, ]
+
+head(train.perf)
+head(test.perf)
+```
+```{r}
+#creating the regression model
+glm_model <- glm(as.factor(G3)~Medu+Fedu+Mjob+Fjob+traveltime+studytime+failures+schoolsup+famsup+paid+activities+nursery+higher+internet+romantic+famrel+freetime+goout+Dalc+Walc+health+absences, family = "binomial", data = train.perf)
+
+summary(glm_model)
+```
+```{r}
+#confusion matrix for the regression model
+predicted <- predict(glm_model, test.perf, type = "response")
+
+predicted_class <- ifelse(predicted >= 0.5, 1, 0)
+ConfusionMatrix <- table(actual = test.perf$G3, predicted = predicted_class)
+ConfusionMatrix
+```
+```{r}
+#finding accuracy, precision, recall, sensitivity and specificity using the confusion matrix
+#accuracy 
+acc <- sum(diag(ConfusionMatrix))/nrow(test.perf)
+
+#precision
+prec <- ConfusionMatrix[2,2]/sum(ConfusionMatrix[2,2]+ConfusionMatrix[2,1])
+
+#recall
+recall <- ConfusionMatrix[2,2]/sum(ConfusionMatrix[2,2]+ConfusionMatrix[1,2])
+
+#sensitivity
+sens <- ConfusionMatrix[1,1]/sum(ConfusionMatrix[1,1]+ConfusionMatrix[2,1])
+
+#specificity
+spec <- ConfusionMatrix[2,2]/sum(ConfusionMatrix[1,2]+ConfusionMatrix[2,2])
+
+acc
+prec
+recall
+sens
+spec
+```
+```{r}
+#finding f score
+fscore <- (2*prec*recall)/(prec+recall)
+fscore 
+```
+```{r}
+#creating a decision tree to predict G3
+install.packages("rpart.plot")
+library(rpart)
+library(rpart.plot)
+tree <- rpart(G3~., data = train.perf, method = 'class')
+rpart.plot(tree)
+```
+```{r}
+#matrix for the decision tree
+matrix_tree <-predict(tree, test.perf, type = 'class')
+table_mat <- table(test.perf$G3, matrix_tree)
+table_mat
+```
+```{r}
+#accuracy of the decision tree matrix
+acc_tree <- sum(diag(table_mat))/sum(table_mat)
+
+#precision
+prec_tree <- table_mat[2,2]/sum(table_mat[2,2]+table_mat[2,1])
+
+#recall
+recall_tree <- table_mat[2,2]/sum(table_mat[2,2]+table_mat[1,2])
+
+#sensitivity
+sens_tree <- table_mat[1,1]/sum(table_mat[1,1]+table_mat[2,1])
+
+#specificity
+spec_tree <- table_mat[2,2]/sum(table_mat[1,2]+table_mat[2,2])
+
+acc_tree
+prec_tree
+recall_tree
+sens_tree
+spec_tree
+```
+
