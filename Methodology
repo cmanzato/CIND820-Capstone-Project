@@ -1,0 +1,27 @@
+Overall Tentative Methodology 
+The following is the overall tentative methodology:
+
+Step 1: Choose theme
+  The theme I chose was classification and regression. 
+Step 2: Choose dataset
+  Chose the Student Performance dataset 
+Step 3: Abstract 
+  Wrote an abstract for the Big Data Analytics project. Includes research questions. 
+Step 4: Literature Review
+  Wrote a literature review describing my research for the project.
+Step 5: Coding in R Studio 
+  Writing the code to get the classification and regression algorithms. 
+    -cleaning and preparing the dataset for the models/algorithms
+    -manipulating columns in the dataset to better suit the models
+    -normalizing data and performing train-test splits
+    -writing code for the regression model and decision tree
+    -calculating the accuracy, precision and recall for the regression model and decision tree
+Step 5.1: Uploading technical reports 
+  Uploading the technical reports on GitHub. 
+Step 5.2: Uploading the working database
+  Uploading the working database on GitHub.
+Step 6: The final report
+  Writing the final report that includes: updated research questions, analyses, project findings, and shortcomings. 
+Step 7: Final presentation 
+  Presenting the project and explaining what was completed. 
+
