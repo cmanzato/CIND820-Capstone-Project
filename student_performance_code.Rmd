@@ -1,6 +1,9 @@
 ---
 title: "student_performance_code"
-output: html_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 ## R Markdown
@@ -243,7 +246,7 @@ fscore
 ```
 ```{r}
 #creating a decision tree to predict G3
-install.packages("rpart.plot")
+#install.packages("rpart.plot")
 library(rpart)
 library(rpart.plot)
 tree <- rpart(G3~., data = train.perf, method = 'class')
@@ -276,5 +279,21 @@ prec_tree
 recall_tree
 sens_tree
 spec_tree
+```
+```{r}
+#random forest
+#install.packages("caret")
+#install.packages("e1071")
+#install.packages("randomForest")
+library(caret)
+library(e1071)
+library(randomForest)
+
+trControl <- trainControl(method = "cv", number = 10, search = "grid")
+
+rf_default <- train(G3~., data = train.perf, method = "rf", metric = "Accuracy", trControl = trControl)
+
+print(rf_default)
+
 ```
 
