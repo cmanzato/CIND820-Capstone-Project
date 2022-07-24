@@ -281,7 +281,33 @@ sens_tree
 spec_tree
 ```
 ```{r}
-#random forest
+#changing all columns to factors for the randdom forest model
+cols <- c("school", "sex", "age", "address", "famsize", "Pstatus", "Medu", "Fedu", "Mjob", "Fjob", "reason", "guardian", "traveltime", "studytime", "failures", "schoolsup", "famsup", "paid", "activities", "nursery", "higher", "internet", "romantic", "famrel", "freetime", "goout", "Dalc", "Walc", "health", "absences", "G1", "G2", "G3")
+train.perf[cols] <- lapply(train.perf[cols], factor)
+
+cols <- c("school", "sex", "age", "address", "famsize", "Pstatus", "Medu", "Fedu", "Mjob", "Fjob", "reason", "guardian", "traveltime", "studytime", "failures", "schoolsup", "famsup", "paid", "activities", "nursery", "higher", "internet", "romantic", "famrel", "freetime", "goout", "Dalc", "Walc", "health", "absences", "G1", "G2", "G3")
+test.perf[cols] <- lapply(test.perf[cols], factor)
+
+str(train.perf)
+str(test.perf)
+```
+```{r}
+#random forest option 1
+library(datasets)
+library(caret)
+library(nnet)
+library(randomForest)
+
+rf <- randomForest(G3~., data = train.perf, proximity = TRUE)
+p1 <- predict(rf, train.perf)
+confusionMatrix(p1, train.perf$G3)
+
+```
+
+
+```{r}
+#random forest option 2 step 1
+
 #install.packages("caret")
 #install.packages("e1071")
 #install.packages("randomForest")
@@ -289,11 +315,112 @@ library(caret)
 library(e1071)
 library(randomForest)
 
+#training the random forest model 
 trControl <- trainControl(method = "cv", number = 10, search = "grid")
 
 rf_default <- train(G3~., data = train.perf, method = "rf", metric = "Accuracy", trControl = trControl)
 
 print(rf_default)
+```
+```{r}
+#step 2
+#constructs a vector from 1:10 (mtry is the vector)
+set.seed(1234)
+tuneGrid <- expand.grid(.mtry = c(1: 10))
+rf_mtry <- train(G3~.,
+    data = train.perf,
+    method = "rf",
+    metric = "Accuracy",
+    tuneGrid = tuneGrid,
+    trControl = trControl,
+    importance = TRUE,
+    nodesize = 14,
+    ntree = 300)
+print(rf_mtry)
 
+#best value of mtry is stored in:
+rf_mtry$bestTune$mtry
+#stored so it can be used later
+max(rf_mtry$results$Accuracy)
+
+best_mtry <- rf_mtry$bestTune$mtry 
+best_mtry
+```
+```{r}
+#step 3
+#creates a variable with the best value of the mtry parameter
+#creates a loop then stores the current value of the max node 
+store_maxnode <- list()
+tuneGrid <- expand.grid(.mtry = best_mtry)
+for (maxnodes in c(5: 15)) {
+    set.seed(1234)
+    rf_maxnode <- train(G3~.,
+        data = train.perf,
+        method = "rf",
+        metric = "Accuracy",
+        tuneGrid = tuneGrid,
+        trControl = trControl,
+        importance = TRUE,
+        nodesize = 14,
+        maxnodes = maxnodes,
+        ntree = 300)
+    current_iteration <- toString(maxnodes)
+    store_maxnode[[current_iteration]] <- rf_maxnode
+}
+results_mtry <- resamples(store_maxnode)
+summary(results_mtry)
+```
+```{r}
+#step 4
+#with the value of the max node and mtry, number of trees can be tuned
+store_maxtrees <- list()
+for (ntree in c(250, 300, 350, 400, 450, 500, 550, 600, 800, 1000, 2000)) {
+    set.seed(5678)
+    rf_maxtrees <- train(G3~.,
+        data = train.perf,
+        method = "rf",
+        metric = "Accuracy",
+        tuneGrid = tuneGrid,
+        trControl = trControl,
+        importance = TRUE,
+        nodesize = 14,
+        maxnodes = 24,
+        ntree = ntree)
+    key <- toString(ntree)
+    store_maxtrees[[key]] <- rf_maxtrees
+}
+results_tree <- resamples(store_maxtrees)
+summary(results_tree)
+```
+```{r}
+#step 4.1
+#with the final model the random forest can be trained
+#800 trees will be trained 
+#24 is the max number of leaves
+fit_rf <- train(G3~.,
+    train.perf,
+    method = "rf",
+    metric = "Accuracy",
+    tuneGrid = tuneGrid,
+    trControl = trControl,
+    importance = TRUE,
+    nodesize = 14,
+    ntree = 800,
+    maxnodes = 24)
+
+print(fit_rf)
+```
+
+```{r}
+#step 5
+#confusion matrix and accuracy score for the final model
+prediction <- predict(fit_rf, train.perf)
+confusionMatrix(prediction, train.perf$G3)
+```
+```{r}
+#step 6
+#shows the variables with the greatest importance
+library(randomForest)
+varImp(fit_rf)
 ```
 
