@@ -1,27 +1,34 @@
-Overall Tentative Methodology 
-The following is the overall tentative methodology:
+The overall tentative methodology displays the process of work being completed throughout the course of the project. 
+Portions of the overall tentative methodology were updated based on feedback, obstacles encountered, and further progress being made on the overall project. 
+The following is a table for the overall tentative methodology:
 
 Step 1: Choose theme
-  The theme I chose was classification and regression. 
+The theme I chose was classification and regression. 
 Step 2: Choose dataset
-  Chose the Student Performance dataset 
+I chose the Student Performance dataset. 
 Step 3: Abstract 
-  Wrote an abstract for the Big Data Analytics project. Includes research questions. 
+Wrote an abstract for the Big Data Analytics project. Includes research questions. 
+-updated the research questions and abstract to better suit the project as needed
 Step 4: Literature Review
-  Wrote a literature review describing my research for the project.
+Wrote a literature review describing my research for the project.
+-updated the descriptive analytics and made it more detailed
 Step 5: Coding in R Studio 
-  Writing the code to get the classification and regression algorithms. 
-    -cleaning and preparing the dataset for the models/algorithms
-    -manipulating columns in the dataset to better suit the models
-    -normalizing data and performing train-test splits
-    -writing code for the regression model and decision tree
-    -calculating the accuracy, precision and recall for the regression model and decision tree
+Writing the code to get the classification and regression algorithms. 
+-cleaning and preparing the dataset for the models/algorithms
+-manipulating columns in the dataset to better suit the models
+-normalizing data and performing train-test splits
+-writing code for the regression model and decision tree
+-calculating the accuracy, precision and recall for the regression model and decision tree
+-writing code for random forest model 
+-calculating accuracy and making confusion matrix
+-finding which attributes have the greatest impact on the random forest model
 Step 5.1: Uploading technical reports 
-  Uploading the technical reports on GitHub. 
+Uploading the technical reports on GitHub.
+-reuploaded code and models as needed
 Step 5.2: Uploading the working database
-  Uploading the working database on GitHub.
+Uploading the working database on GitHub. 
 Step 6: The final report
-  Writing the final report that includes: updated research questions, analyses, project findings, and shortcomings. 
+Writing the final report that includes: updated research questions, analyses, project findings, and shortcomings. 
 Step 7: Final presentation 
-  Presenting the project and explaining what was completed. 
+Presenting the project and explaining what was completed. 
 
